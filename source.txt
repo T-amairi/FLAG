@@ -1,9 +1,10 @@
 Inverse mod :
 https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
 
-LU decomposition :
+LU :
 https://en.wikipedia.org/wiki/LU_decomposition
 https://www.engr.colostate.edu/~thompson/hPage/CourseMat/Tutorials/CompMethods/doolittle.pdf
-
-Solving linear equation with LU decomposition:
 https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/INT-APP/CURVE-linear-system.html
+
+Strassen :
+https://specfun.inria.fr/bostan/mpri/DenseLinAlg.pdf

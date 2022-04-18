@@ -138,8 +138,55 @@ Matrix* newMatrixModP(int n, int p)
     return matrix;
 }
 
+Matrix* addMatrix(const Matrix* A, const Matrix* B, int p)
+{
+    int n = A->n;
+    Matrix* C = newMatrix(n);
+    
+    for(int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            C->values[i][j] = add(A->values[i][j],B->values[i][j],p);
+        }
+    }
+
+    return C;
+}
+
+Matrix* subMatrix(const Matrix* A, const Matrix* B, int p)
+{
+    int n = A->n;
+    Matrix* C = newMatrix(n);
+    
+    for(int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            C->values[i][j] = sub(A->values[i][j],B->values[i][j],p);
+        }
+    }
+
+    return C;
+}
+
+void negMatrix(Matrix* A, int p)
+{
+    int n = A->n;
+
+    for(int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            A->values[i][j] = A->values[i][j] ? (A->values[i][j] * -1) + p : 0;
+        }
+    }
+}
+
 void freeMatrix(Matrix* matrix)
 {
+    if(!matrix) return;
+    
     for(int i = 0; i < matrix->n; i++)
     {
         free(matrix->values[i]);
@@ -172,4 +219,41 @@ void printVector(const int* x, int n)
     }
 
     printf("\n");
+}
+
+bool assertMatrixInversion(const Matrix* A, const Matrix* A_, int p)
+{
+    int n = A->n;
+    int tmp;
+
+    for(int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            tmp = 0;
+
+            for (int k = 0; k < n; ++k)
+            {
+                tmp = add(tmp,(A->values[i][k] * A_->values[k][j]) % p,p);
+            }
+
+            if(i == j)
+            {
+                if(tmp != 1)
+                {
+		            return 0;
+                }
+            }
+
+            else
+            {
+                if(tmp != 0)
+                {
+		            return 0;
+                }
+            }
+        }
+    }
+
+    return 1;
 }

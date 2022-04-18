@@ -49,7 +49,7 @@ void LU(const Matrix* A, Matrix* L, Matrix* U, int p)
     }
 }
 
-int assertLU(const Matrix* A, const Matrix* L, const Matrix* U, int p)
+bool assertLU(const Matrix* A, const Matrix* L, const Matrix* U, int p)
 {
     int n = A->n;
     int tmp;
@@ -68,12 +68,12 @@ int assertLU(const Matrix* A, const Matrix* L, const Matrix* U, int p)
             if(tmp != A->values[i][j])
             {
                 printf("LU decomposition failed the assertion A = LU\n");
-		        return 0;
+		        return false;
             }
         }
     }
 
-    return 1;
+    return true;
 }
 
 int* forwardSub(const Matrix* L, const int* b, int p)
@@ -142,7 +142,7 @@ int* linearSolveLU(const Matrix* L, const Matrix* U, const int* b, int p)
     return x;
 }
 
-int assertLinearSolveLU(const Matrix* A, const int* x, const int* b, int p)
+bool assertLinearSolveLU(const Matrix* A, const int* x, const int* b, int p)
 {
     int n = A->n;
     int tmp;
@@ -159,20 +159,20 @@ int assertLinearSolveLU(const Matrix* A, const int* x, const int* b, int p)
         if(tmp != b[i])
         {
             printf("Linear system solving using LU decomposition failed\n");
-            return 0;
+            return false;
         }
     }
 
-    return 1;
+    return true;
 }
 
-Matrix* invertLU(const Matrix* A, const Matrix* L, const Matrix* U, int p)
+Matrix* LUInversion(const Matrix* A, const Matrix* L, const Matrix* U, int p)
 {
     int* tmp;
     int check;
     int n = L->n;
     Matrix* I = newIdentity(n);
-    Matrix* A_ = newIdentity(n); 
+    Matrix* A_ = newMatrix(n); 
 
     for(int i = 0; i < n; i++)
     {
@@ -199,43 +199,4 @@ Matrix* invertLU(const Matrix* A, const Matrix* L, const Matrix* U, int p)
     freeMatrix(I);
 
     return A_;
-}
-
-int assertInvertLU(const Matrix* A, const Matrix* A_, int p)
-{
-    int n = A->n;
-    int tmp;
-
-    for(int i = 0; i < n; ++i)
-    {
-        for (int j = 0; j < n; ++j)
-        {
-            tmp = 0;
-
-            for (int k = 0; k < n; ++k)
-            {
-                tmp = add(tmp,(A->values[i][k] * A_->values[k][j]) % p,p);
-            }
-
-            if(i == j)
-            {
-                if(tmp != 1)
-                {
-                    printf("LU inversion failed the assertion A*A-1 = I\n");
-		            return 0;
-                }
-            }
-
-            else
-            {
-                if(tmp != 0)
-                {
-                    printf("LU inversion failed the assertion A*A-1 = I\n");
-		            return 0;
-                }
-            }
-        }
-    }
-
-    return 1;
 }

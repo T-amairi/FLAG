@@ -25,6 +25,7 @@ int sub(int x, int y, int p)
 int inv(int x, int p)
 {
     if(x == 1) return 1;
+    if(x == 0) return -1;
     
     int r0 = x, u0 = 1;
     int r1 = p, u1 = 0;

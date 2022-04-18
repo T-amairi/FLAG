@@ -2,6 +2,9 @@
     "files.associations": {
         "matrix.h": "c",
         "lu.h": "c",
-        "operationmodp.h": "c"
+        "operationmodp.h": "c",
+        "strassen.h": "c",
+        "stdbool.h": "c",
+        "benchmark.h": "c"
     }
 }
