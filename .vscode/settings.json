@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "matrix.h": "c",
+        "lu.h": "c",
+        "operationmodp.h": "c"
+    }
+}

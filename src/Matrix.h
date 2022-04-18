@@ -4,6 +4,7 @@
  - FLAG : [Implementation project]
 */
 
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,6 +15,12 @@ typedef struct Matrix
 } Matrix;
 
 int getRandomValue(int p);
-Matrix* newMatrix(int n, int p);
+int* getRandomVector(int n, int p);
+
+Matrix* newMatrix(int n);
+Matrix* newIdentity(int n);
+Matrix* newMatrixModP(int n, int p);
+
 void freeMatrix(Matrix* matrix);
-void printMatrix(Matrix* matrix);
+void printMatrix(const Matrix* matrix);
+void printVector(const int* x, int n);

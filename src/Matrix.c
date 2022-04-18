@@ -8,16 +8,34 @@
 
 int getRandomValue(int p)
 {
-    return rand() % (p + 1);
+    return rand() % p;
 }
 
-Matrix* newMatrix(int n, int p)
+int* getRandomVector(int n, int p)
+{
+    int* x = malloc(n*sizeof(int));
+
+    if(!x)
+    {
+        printf("Can not allocate memory for the vector x\n"); 
+        return NULL;
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        x[i] = getRandomValue(p);
+    }
+
+    return x;
+}
+
+Matrix* newMatrix(int n)
 {
     Matrix* matrix = malloc(sizeof(Matrix));
 
     if(!matrix)
     {
-        printf("Can not allocate memory for the Matrix"); 
+        printf("Can not allocate memory for the Matrix\n"); 
         return NULL;
     }
 
@@ -26,21 +44,92 @@ Matrix* newMatrix(int n, int p)
 
     if(!matrix->values) 
     {
-        printf("Can not allocate memory to fill the Matrix"); 
+        printf("Can not allocate memory to fill the Matrix\n"); 
         return NULL;
     }
 
-    for(size_t i = 0; i < n; i++)
+    for(int i = 0; i < n; i++)
     {
         matrix->values[i] = malloc(n*sizeof(int));
 
         if(!matrix->values[i]) 
         {
-            printf("Can not allocate memory to fill the Matrix"); 
+            printf("Can not allocate memory to fill the Matrix\n"); 
+            return NULL;
+        }
+    }
+
+    return matrix;
+}
+
+Matrix* newIdentity(int n)
+{
+    Matrix* matrix = malloc(sizeof(Matrix));
+
+    if(!matrix)
+    {
+        printf("Can not allocate memory for the Matrix\n"); 
+        return NULL;
+    }
+
+    matrix->n = n;
+    matrix->values = malloc(n*sizeof(int*));
+
+    if(!matrix->values) 
+    {
+        printf("Can not allocate memory to fill the Matrix\n"); 
+        return NULL;
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        matrix->values[i] = malloc(n*sizeof(int));
+
+        if(!matrix->values[i]) 
+        {
+            printf("Can not allocate memory to fill the Matrix\n"); 
             return NULL;
         }
 
-        for(size_t j = 0; j < n; j++)
+        for(int j = 0; j < n; j++)
+        {
+            matrix->values[i][j] = (i == j) ? 1 : 0;
+        }
+    }
+
+    return matrix;
+}
+
+Matrix* newMatrixModP(int n, int p)
+{
+    Matrix* matrix = malloc(sizeof(Matrix));
+
+    if(!matrix)
+    {
+        printf("Can not allocate memory for the Matrix\n"); 
+        return NULL;
+    }
+
+    matrix->n = n;
+    matrix->values = malloc(n*sizeof(int*));
+
+    if(!matrix->values) 
+    {
+        printf("Can not allocate memory to fill the Matrix\n"); 
+        return NULL;
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        matrix->values[i] = malloc(n*sizeof(int));
+
+        if(!matrix->values[i]) 
+        {
+            printf("Can not allocate memory to fill the Matrix\n"); 
+            return NULL;
+        }
+
+        for(int j = 0; j < n; j++)
         {
             matrix->values[i][j] = getRandomValue(p);
         }
@@ -51,7 +140,7 @@ Matrix* newMatrix(int n, int p)
 
 void freeMatrix(Matrix* matrix)
 {
-    for(size_t i = 0; i < matrix->n; i++)
+    for(int i = 0; i < matrix->n; i++)
     {
         free(matrix->values[i]);
     }
@@ -60,7 +149,7 @@ void freeMatrix(Matrix* matrix)
     free(matrix);
 }
 
-void printMatrix(Matrix* matrix)
+void printMatrix(const Matrix* matrix)
 {
     for(size_t i = 0; i < matrix->n; i++)
     {
@@ -71,4 +160,16 @@ void printMatrix(Matrix* matrix)
 
         printf("\n");
     }
+
+    printf("\n");
+}
+
+void printVector(const int* x, int n)
+{
+    for(int i = 0; i < n; i++)
+    {
+        printf("%d ",x[i]);
+    }
+
+    printf("\n");
 }

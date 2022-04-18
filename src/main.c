@@ -12,7 +12,7 @@
 #include <math.h>
 #include <err.h>
 
-#include "Matrix.h"
+#include "LU.h"
 
 int p = 293;
 int n = 2;
@@ -37,11 +37,10 @@ void usage(char ** argv)
 	printf("%s [OPTIONS]\n\n", argv[0]);
 	printf("Options:\n");
 	printf("--prime p               compute in the prime finite field ℤ/pℤ [default 293]\n");
-	printf("--size n                size of the square matrix [default 2]\n");
-	exit(0);
+	printf("--size n                size of the square matrix [default 2]\n\n");
 }
 
-void process_command_line_options(int argc, char ** argv)
+void processCommandLine(int argc, char ** argv)
 {
     struct option opts[3] = 
     {
@@ -76,13 +75,33 @@ void process_command_line_options(int argc, char ** argv)
 
 int main(int argc, char ** argv)
 {
-    process_command_line_options(argc, argv);
-
     srand(time(NULL));
+
+    argc > 1 ? processCommandLine(argc, argv) : usage(argv);
     
-    Matrix* matrix = newMatrix(n,p);
-    printMatrix(matrix);
-    freeMatrix(matrix);
+    Matrix* A = newMatrixModP(n,p);
+    Matrix* L = newMatrix(n);
+    Matrix* U = newMatrix(n);
+
+    LU(A,L,U,p);
+
+    printf("Assertion of A = LU : %d\n",assertLU(A,L,U,p));
+
+    int* b = getRandomVector(n,p);
+    int* x = linearSolveLU(L,U,b,p);
+
+    printf("Assertion of Ax = b : %d\n",assertLinearSolveLU(A,x,b,p));
+
+    Matrix* A_ = invertLU(A,L,U,p);
+    
+    printf("Assertion of A*A-1 = I : %d\n",assertInvertLU(A,A_,p));
+
+    freeMatrix(A);
+    freeMatrix(L);
+    freeMatrix(U);
+    freeMatrix(A_);
+    free(b);
+    free(x);
 
     return 0;
 }

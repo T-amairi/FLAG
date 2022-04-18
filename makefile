@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -Wall -Werror -g -O3 
+CCFLAGS = -Wall -Werror -g -O3 -march=native
 LIBFLAGS = -lm
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
