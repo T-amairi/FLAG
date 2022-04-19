@@ -13,10 +13,10 @@
 #include "Benchmark.h"
 
 int p = 293;
-int n = 2;
+int n = 4;
 bool isDemo = true;
 bool isBench = false;
-int l = 7;
+int l = 10;
 
 bool isPrime(int p)
 {
@@ -38,19 +38,20 @@ void usage(char ** argv)
 	printf("%s [OPTIONS]\n\n", argv[0]);
 	printf("Options:\n");
 	printf("--prime p               compute in the prime finite field ℤ/pℤ. [default 293]\n");
-	printf("--size n                size of the square matrix (have to be a power of 2). [default 2]\n");
+	printf("--size n                size of the square matrix (have to be a power of 2). [default 4]\n");
     printf("--demo d                execute a demo using all the functions : 0 (false). [default true, i.e, != 0]\n");
 	printf("--test t                measure the execution time and export the result into a CSV format : 0 (false). [default 0, i.e, == 0]\n");
-    printf("--limit l               to set the maximum size of n during the benchmark test such as n = 2^l (have to be greater than 0). [default 7]\n\n");
+    printf("--limit l               to set the maximum size of n during the benchmark test such as n = 2^l (have to be greater than 0). [default 10]\n\n");
 }
 
 void basicDemo(int n, int p)
 {
-    printf("Modulus: %d, size: %dx%d\n\n",p,n,n);
+    printf("Modulus p: %d, size: %dx%d\n\n",p,n,n);
 
     Matrix* A = getInvertibleMatrix(n,p);
     
-    printf("|********* The randomly generated matrix A *********|\n\n");
+    printf("|********* The randomly generated matrix A *********|\n");
+    printf("Matrix A:\n");
     printMatrix(A);
 
     printf("|********* LU decomposition *********|\n");
@@ -64,9 +65,9 @@ void basicDemo(int n, int p)
     printf("Matrix U:\n");
     printMatrix(U);
 
-    printf("Assertion of A = LU : %d\n",assertLU(A,L,U,p));
+    printf("Assertion of A = LU : %d\n\n",assertLU(A,L,U,p));
 
-    printf("|********* Linear system solving using the LU decomposition *********|\n\n");
+    printf("|********* Linear system solving using the LU decomposition *********|\n");
     printf("System: Ax = b\n");
 
     int* b = getRandomVector(n,p);
@@ -76,21 +77,21 @@ void basicDemo(int n, int p)
     printf("Solution x : "); printVector(x,n);
     printf("\nAssertion of Ax = b : %d\n\n",assertLinearSolveLU(A,x,b,p));
 
-    printf("|********* Matrix inversion using the LU decomposition *********|\n\n");
+    printf("|********* Matrix inversion using the LU decomposition *********|\n");
     printf("Inverse of A:\n");
 
     Matrix* A_ = LUInversion(A,L,U,p);
     printMatrix(A_);
     printf("Assertion of A*A-1 = I (LU): %d\n\n",assertMatrixInversion(A,A_,p));
 
-    printf("|********* Matrix inversion via the Strassen algorithm with naive product *********|\n\n");
+    printf("|********* Matrix inversion via the Strassen algorithm with naive product *********|\n");
     printf("Inverse of A:\n");
 
     Matrix* AsF_ = StrassenInversion(A,p,false);
     printMatrix(AsF_);
     printf("Assertion of A*A-1 = I (Strassen + naive product): %d\n\n",assertMatrixInversion(A,AsF_,p));
 
-    printf("|********* Matrix inversion via the Strassen algorithm with Strassen product *********|\n\n");
+    printf("|********* Matrix inversion via the Strassen algorithm with Strassen product *********|\n");
     printf("Inverse of A:\n");
 
     Matrix* AsT_ = StrassenInversion(A,p,true);
