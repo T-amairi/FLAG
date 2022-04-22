@@ -1,6 +1,6 @@
 # Algorithmique algébrique
 
-Ce projet consiste à implémenter en C et à comparer différents algorithmes de multiplication et d'inversion de matrice. Pour des raisons de simplicité, l'implémentation se fera uniquement avec des matrices carrées de taille 2^n. Finalement, toute opération arithmétique se fera dans le coprs fini ℤ/pℤ avec p un nombre premier ne dépassant pas les 30 bits. Il est vivement recommandé de choisir un nombre premier p assez élevé afin d'obtenir (avec grande probabilité) des matrices inversibles. En effet, le programme part du principe que les matrices sont inversibles (néanmoins, il est possible de vérifier si c'est vraiment le cas).
+Ce projet consiste à implémenter en C et à comparer différents algorithmes de multiplication et d'inversion de matrice. Pour des raisons de simplicité, l'implémentation se fera uniquement avec des matrices carrées de taille 2^n. Finalement, toute opération arithmétique se fera dans le coprs fini ℤ/pℤ avec p un nombre premier ne dépassant pas les 30 bits. Il est vivement recommandé de choisir un nombre premier p assez élevé afin d'obtenir (avec grande probabilité) des matrices inversibles. En effet, le programme part du principe que les matrices sont inversibles (néanmoins, le programme peut vérifier si c'est vraiment le cas).
 
 ## Les algorithmes implémentés
 
@@ -17,7 +17,7 @@ Ce projet consiste à implémenter en C et à comparer différents algorithmes d
 ## Lancement
 
 Pour créer l'exécutable, il suffit d'utiliser la commande `make` et l'exécutable `project.out` sera
-généré. Pour lancer l'application, il suffit de lancer l'exécutable.
+généré.
 
 **ATTENTION** : un compilateur supportant C99 est nécessaire (de préférence GCC car certains flags d'optimisations sont activés).
 
@@ -41,7 +41,7 @@ Un exemple de commande :
 
 ## Benchmark
 
-Lors des benchmarks, les résultats sont exportés au format CSV dans le dossier `benchmark`. Pour obtenir les plots des résultats, il suffit d'exécuter le script `plot.py` pour obtenir les images dans le dossier `img`.
+Lors des benchmarks, les résultats sont exportés au format CSV dans le dossier `benchmark`. Pour obtenir les plots des résultats, il suffit d'exécuter le script `plot.py` et les images des graphiques seront dans le dossier `img`.
 
 **ATTENTION** : le package matplotlib est nécessaire.
 
@@ -59,7 +59,7 @@ Lors des benchmarks, les résultats sont exportés au format CSV dans le dossier
 
 ### Strassen
 
-<https://specfun.inria.fr/bostan/mpri/DenseLinAlg.pdf>
+- <https://specfun.inria.fr/bostan/mpri/DenseLinAlg.pdf>
 
 ## Auteurs
 
