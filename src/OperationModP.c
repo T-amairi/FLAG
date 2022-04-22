@@ -1,8 +1,12 @@
-/* 
- - Tahar AMAIRI & Hamza RAIS
- - MAIN4 Polytech Sorbonne
- - FLAG : [Implementation project]
-*/
+/**
+ * @file OperationModP.h
+ * @author Tahar AMAIRI & Hamza RAIS
+ * @brief Operation modulus p
+ * @date 2022-04-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include "OperationModP.h"
 

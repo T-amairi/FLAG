@@ -1,33 +1,14 @@
-/* 
- - Tahar AMAIRI & Hamza RAIS
- - MAIN4 Polytech Sorbonne
- - FLAG : [Implementation project]
-*/
+/**
+ * @file Benchmark.h
+ * @author Tahar AMAIRI & Hamza RAIS
+ * @brief Benchmark function to get the execution time of each implemented methods
+ * @date 2022-04-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include "Benchmark.h"
-
-Matrix* getInvertibleMatrix(int n, int p)
-{
-    Matrix* A;
-    Matrix* AsT_;
-    bool tmp = false;
-
-    while(!tmp)
-    {
-        A = newMatrixModP(n,p);
-        AsT_ = StrassenInversion(A,p,true);
-        tmp = assertMatrixInversion(A,AsT_,p);
-
-        if(tmp == 0)
-        {
-            freeMatrix(A);
-            freeMatrix(AsT_);
-        }
-    }
-
-    freeMatrix(AsT_);
-    return A;
-}
 
 double getExecTimeProduct(const Matrix* A, const Matrix* B, int p, bool ifStrassenProduct)
 {
@@ -52,7 +33,7 @@ double getExecTimeInversion_LU(const Matrix* A, int p)
     gettimeofday(&start, NULL);
 
     LU(A,L,U,p);
-    Matrix* A_ = LUInversion(A,L,U,p);
+    Matrix* A_ = LUInversion(A,L,U,p,false);
     
     gettimeofday(&end, NULL);
 
@@ -100,10 +81,7 @@ void exportResults(int l, int p)
 
         printf("Computing for n = %d\n",n);
 
-        printf("    Finding an invertible matrix...");
-        A = getInvertibleMatrix(n,p);
-        printf(" done\n");
-
+        A = newMatrixModP(n,p);
         B = newMatrixModP(n,p);
 
         fprintf(fLU,"%d;%f\n",n,getExecTimeInversion_LU(A,p));

@@ -1,8 +1,12 @@
-/* 
- - Tahar AMAIRI & Hamza RAIS
- - MAIN4 Polytech Sorbonne
- - FLAG : [Implementation project]
-*/
+/**
+ * @file LU.c
+ * @author Tahar AMAIRI & Hamza RAIS
+ * @brief Implementation of LU decomposition and inversion
+ * @date 2022-04-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include "LU.h"
 
@@ -29,7 +33,7 @@ void LU(const Matrix* A, Matrix* L, Matrix* U, int p)
 
             for (int k = 0; k < i; k++)
             {
-                tmp = add(tmp ,(L->values[i][k] * U->values[k][j]) % p,p);
+                tmp = add(tmp,((long) L->values[i][k] * U->values[k][j]) % p,p);
             }
             
             U->values[i][j] = sub(A->values[i][j],tmp,p);
@@ -41,10 +45,10 @@ void LU(const Matrix* A, Matrix* L, Matrix* U, int p)
 
             for (int k = 0; k < i; k++)
             {
-                tmp = add(tmp,(L->values[j][k] * U->values[k][i]) % p,p); 
+                tmp = add(tmp,((long) L->values[j][k] * U->values[k][i]) % p,p); 
             }
 
-            L->values[j][i] = (sub(A->values[j][i],tmp,p) * inv(U->values[i][i],p)) % p;
+            L->values[j][i] = ((long) sub(A->values[j][i],tmp,p) * inv(U->values[i][i],p)) % p;
         }
     }
 }
@@ -62,7 +66,7 @@ bool assertLU(const Matrix* A, const Matrix* L, const Matrix* U, int p)
 
             for (int k = 0; k < n; ++k)
             {
-                tmp = add(tmp,(L->values[i][k] * U->values[k][j]) % p,p);
+                tmp = add(tmp,((long) L->values[i][k] * U->values[k][j]) % p,p);
             }
 
             if(tmp != A->values[i][j])
@@ -96,10 +100,10 @@ int* forwardSub(const Matrix* L, const int* b, int p)
 
         for(int j = 0; j < i; j++)
         {
-            tmp = sub(tmp,(L->values[i][j] * x[j]) % p,p);
+            tmp = sub(tmp,((long) L->values[i][j] * x[j]) % p,p);
         }
 
-        x[i] = (tmp * inv(L->values[i][i],p)) % p;
+        x[i] = ((long) tmp * inv(L->values[i][i],p)) % p;
     }
 
     return x;
@@ -125,10 +129,10 @@ int* backwardSub(const Matrix* U, const int* b, int p)
 
         for(int j = i + 1; j < n; j++)
         {
-            tmp = sub(tmp,(U->values[i][j] * x[j]) % p,p);
+            tmp = sub(tmp,((long) U->values[i][j] * x[j]) % p,p);
         }
 
-        x[i] = (tmp * inv(U->values[i][i],p)) % p;
+        x[i] = ((long) tmp * inv(U->values[i][i],p)) % p;
     }
     
     return x;
@@ -153,7 +157,7 @@ bool assertLinearSolveLU(const Matrix* A, const int* x, const int* b, int p)
 
         for (int j = 0; j < n; ++j)
         {
-            tmp = add(tmp,(A->values[i][j] * x[j]) % p,p);
+            tmp = add(tmp,((long) A->values[i][j] * x[j]) % p,p);
         }
 
         if(tmp != b[i])
@@ -166,10 +170,10 @@ bool assertLinearSolveLU(const Matrix* A, const int* x, const int* b, int p)
     return true;
 }
 
-Matrix* LUInversion(const Matrix* A, const Matrix* L, const Matrix* U, int p)
+Matrix* LUInversion(const Matrix* A, const Matrix* L, const Matrix* U, int p, bool assert)
 {
     int* tmp;
-    int check;
+    bool check;
     int n = L->n;
     Matrix* I = newIdentity(n);
     Matrix* A_ = newMatrix(n); 
@@ -177,7 +181,7 @@ Matrix* LUInversion(const Matrix* A, const Matrix* L, const Matrix* U, int p)
     for(int i = 0; i < n; i++)
     {
         tmp = linearSolveLU(L,U,I->values[i],p);
-        check = assertLinearSolveLU(A,tmp,I->values[i],p);
+        check = !assert ? true : assertLinearSolveLU(A,tmp,I->values[i],p);
 
         if(!check)
         {

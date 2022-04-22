@@ -1,23 +1,31 @@
-/* 
- - Tahar AMAIRI & Hamza RAIS
- - MAIN4 Polytech Sorbonne
- - FLAG : [Implementation project]
-
- USAGE: 
-    $ ./project.out --prime 293 --size 2
-*/
+/**
+ * @file main.c
+ * @author Tahar AMAIRI & Hamza RAIS
+ * @brief Implementation project [FLAG]
+ * @date 2022-04-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include <getopt.h>
 #include <err.h>
 #include <time.h>
 #include "Benchmark.h"
 
-int p = 293;
-int n = 4;
-bool isDemo = true;
-bool isBench = false;
-int l = 10;
+int p = 65537; //modulus p
+int n = 4; //square size of the matrices
+bool isDemo = true; //to output the demo 
+bool isBench = false; //to benchmark the implemented methods
+int l = 10; //maximum size of matrices during the benchmark test such as n = 2^l
 
+/**
+ * @brief check if p is a prime number
+ * 
+ * @param p the number to be checked
+ * @return true : p is a prime number
+ * @return false : p is not a prime number
+ */
 bool isPrime(int p)
 {
     if(p <= 1 || p % 2 == 0) return 0;
@@ -33,22 +41,33 @@ bool isPrime(int p)
     return true;
 }
 
+/**
+ * @brief print the command options
+ * 
+ * @param argv argument to get file name 
+ */
 void usage(char ** argv)
 {
 	printf("%s [OPTIONS]\n\n", argv[0]);
 	printf("Options:\n");
-	printf("--prime p               compute in the prime finite field ℤ/pℤ. [default 293]\n");
+	printf("--prime p               compute in the prime finite field ℤ/pℤ. [default 65537]\n");
 	printf("--size n                size of the square matrix (have to be a power of 2). [default 4]\n");
     printf("--demo d                execute a demo using all the functions : 0 (false). [default true, i.e, != 0]\n");
 	printf("--test t                measure the execution time and export the result into a CSV format : 0 (false). [default 0, i.e, == 0]\n");
-    printf("--limit l               to set the maximum size of n during the benchmark test such as n = 2^l (have to be greater than 0). [default 10]\n\n");
+    printf("--limit l               to set the maximum size of matrices during the benchmark test such as n = 2^l (have to be greater than 0). [default 10]\n\n");
 }
 
+/**
+ * @brief launch all the implemented functions in ℤ/pℤ with matrices of size n
+ * 
+ * @param n size of the matrices
+ * @param p modulus p
+ */
 void basicDemo(int n, int p)
 {
     printf("Modulus p: %d, size: %dx%d\n\n",p,n,n);
 
-    Matrix* A = getInvertibleMatrix(n,p);
+    Matrix* A = newMatrixModP(n,p);
     
     printf("|********* The randomly generated matrix A *********|\n");
     printf("Matrix A:\n");
@@ -80,23 +99,23 @@ void basicDemo(int n, int p)
     printf("|********* Matrix inversion using the LU decomposition *********|\n");
     printf("Inverse of A:\n");
 
-    Matrix* A_ = LUInversion(A,L,U,p);
+    Matrix* A_ = LUInversion(A,L,U,p,true);
     printMatrix(A_);
-    printf("Assertion of A*A-1 = I (LU): %d\n\n",assertMatrixInversion(A,A_,p));
+    printf("Assertion of A*A-1 = I : %d\n\n",assertMatrixInversion(A,A_,p));
 
     printf("|********* Matrix inversion via the Strassen algorithm with naive product *********|\n");
     printf("Inverse of A:\n");
 
     Matrix* AsF_ = StrassenInversion(A,p,false);
     printMatrix(AsF_);
-    printf("Assertion of A*A-1 = I (Strassen + naive product): %d\n\n",assertMatrixInversion(A,AsF_,p));
+    printf("Assertion of A*A-1 = I : %d\n\n",assertMatrixInversion(A,AsF_,p));
 
     printf("|********* Matrix inversion via the Strassen algorithm with Strassen product *********|\n");
     printf("Inverse of A:\n");
 
     Matrix* AsT_ = StrassenInversion(A,p,true);
     printMatrix(AsT_);    
-    printf("Assertion of A*A-1 = I (Strassen + Strassen product): %d\n\n",assertMatrixInversion(A,AsT_,p));
+    printf("Assertion of A*A-1 = I : %d\n\n",assertMatrixInversion(A,AsT_,p));
 
     freeMatrix(A);
     freeMatrix(L);
@@ -108,6 +127,12 @@ void basicDemo(int n, int p)
     free(x);
 }
 
+/**
+ * @brief process the command line given by the user 
+ * 
+ * @param argc number of argument
+ * @param argv arguments
+ */
 void processCommandLine(int argc, char ** argv)
 {
     struct option opts[6] = 

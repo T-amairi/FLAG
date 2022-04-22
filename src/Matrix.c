@@ -1,8 +1,12 @@
-/* 
- - Tahar AMAIRI & Hamza RAIS
- - MAIN4 Polytech Sorbonne
- - FLAG : [Implementation project]
-*/
+/**
+ * @file Matrix.h
+ * @author Tahar AMAIRI & Hamza RAIS
+ * @brief Matrix structure and its functions
+ * @date 2022-04-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #include "Matrix.h"
 
@@ -170,7 +174,7 @@ Matrix* subMatrix(const Matrix* A, const Matrix* B, int p)
     return C;
 }
 
-void negMatrix(Matrix* A, int p)
+void subMatrixInPlace(Matrix* A, Matrix* B, int p, bool invert)
 {
     int n = A->n;
 
@@ -178,7 +182,15 @@ void negMatrix(Matrix* A, int p)
     {
         for (int j = 0; j < n; ++j)
         {
-            A->values[i][j] = A->values[i][j] ? (A->values[i][j] * -1) + p : 0;
+            if(invert)
+            {
+                B->values[i][j] = sub(A->values[i][j],B->values[i][j],p);
+            }
+
+            else
+            {
+                A->values[i][j] = sub(A->values[i][j],B->values[i][j],p);
+            }
         }
     }
 }
@@ -234,14 +246,14 @@ bool assertMatrixInversion(const Matrix* A, const Matrix* A_, int p)
 
             for (int k = 0; k < n; ++k)
             {
-                tmp = add(tmp,(A->values[i][k] * A_->values[k][j]) % p,p);
+                tmp = add(tmp,((long) A->values[i][k] * A_->values[k][j]) % p,p);
             }
 
             if(i == j)
             {
                 if(tmp != 1)
                 {
-		            return 0;
+		            return false;
                 }
             }
 
@@ -249,11 +261,11 @@ bool assertMatrixInversion(const Matrix* A, const Matrix* A_, int p)
             {
                 if(tmp != 0)
                 {
-		            return 0;
+		            return false;
                 }
             }
         }
     }
 
-    return 1;
+    return true;
 }
