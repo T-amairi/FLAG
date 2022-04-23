@@ -9,9 +9,9 @@
  */
 
 #include "Strassen.h"
- 
-//if a size of a matrix is below this value, the StrassenMultiplication function will use the naive multiplication
-int fastThreshold = 64;
+
+//matrix size threshold at which the use of Strassen multiplication is avoided (this value can be changed and it depends on various factors)
+int productThreshold = 64;
 
 bool isPowerOfTwo(int x)
 {
@@ -52,7 +52,7 @@ Matrix* StrassenMultiplication(const Matrix* A, const Matrix* B, int p)
         return NULL;
     }
 
-    if(n <= fastThreshold)
+    if(n <= productThreshold)
     {
         return naiveMultiplication(A,B,p);
     }

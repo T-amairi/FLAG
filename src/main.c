@@ -18,6 +18,7 @@ int n = 4; //square size of the matrices
 bool isDemo = true; //to output the demo 
 bool isBench = false; //to benchmark the implemented methods
 int l = 10; //maximum size of matrices during the benchmark test such as n = 2^l
+int r = 3; //number of test repetition for each size to get the mean
 
 /**
  * @brief check if p is a prime number
@@ -54,6 +55,7 @@ void usage(char ** argv)
 	printf("--size n                size of the square matrix (have to be a power of 2). [default 4]\n");
     printf("--demo d                execute a demo using all the functions : 0 (false). [default true, i.e, != 0]\n");
 	printf("--test t                measure the execution time and export the result into a CSV format : 0 (false). [default 0, i.e, == 0]\n");
+    printf("--repeat r              number of test repetition for each size to get the mean. [default 3]\n");
     printf("--limit l               to set the maximum size of matrices during the benchmark test such as n = 2^l (have to be greater than 0). [default 10]\n\n");
 }
 
@@ -135,13 +137,14 @@ void basicDemo(int n, int p)
  */
 void processCommandLine(int argc, char ** argv)
 {
-    struct option opts[6] = 
+    struct option opts[7] = 
     {
 		{"prime", required_argument, NULL, 'p'},
 		{"size", required_argument, NULL, 's'},
         {"demo", required_argument, NULL, 'd'},
         {"test", required_argument, NULL, 't'},
         {"limit", required_argument, NULL, 'l'},
+        {"repeat", required_argument, NULL, 'r'},
 		{NULL, 0, NULL, 0}
 	};
 
@@ -166,6 +169,9 @@ void processCommandLine(int argc, char ** argv)
             case 'l':
                 l = atoi(optarg);
                 break;
+            case 'r':
+                r = atoi(optarg);
+                break;
             default:
                 errx(1, "Unknown option\n");
 		}
@@ -173,19 +179,25 @@ void processCommandLine(int argc, char ** argv)
 
 	if(p > 0x3fffffff || !isPrime(p))
     {
-        errx(1, "p have to be a prime number of size at most 30 bits.\n");
+        errx(1, "The number p have to be a prime number of size at most 30 bits.\n");
 		exit(1);
 	}
 
     if(n <= 0 || !isPowerOfTwo(n))
     {
-        errx(1, "n have to be a power of 2 and greater than 0.\n");
+        errx(1, "The size n have to be a power of 2 and greater than 0.\n");
 		exit(1);
 	}
 
     if(l <= 0)
     {
-        errx(1, "l have to be  greater than 0.\n");
+        errx(1, "The limit l have to be greater than 0.\n");
+		exit(1);
+	}
+
+    if(r <= 0)
+    {
+        errx(1, "The number of repetition r have to be greater than 0.\n");
 		exit(1);
 	}
 }
@@ -197,7 +209,7 @@ int main(int argc, char ** argv)
     argc > 1 ? processCommandLine(argc, argv) : usage(argv);
 
     if(isDemo) basicDemo(n,p);
-    if(isBench) exportResults(l,p); 
+    if(isBench) exportResults(l,r,p); 
 
     return 0;
 }

@@ -17,9 +17,9 @@ Ce projet consiste à implémenter en C et à comparer différents algorithmes d
 ## Lancement
 
 Pour créer l'exécutable, il suffit d'utiliser la commande `make` et l'exécutable `project.out` sera
-généré.
+généré. Il existe aussi une règle `clean`.
 
-**ATTENTION** : un compilateur supportant C99 est nécessaire (de préférence GCC car certains flags d'optimisations sont activés).
+**ATTENTION** : un compilateur supportant C99 est nécessaire.
 
 ## Options
 
@@ -30,13 +30,14 @@ Voici les options disponibles à l'utilisateur lors de l'exécution :
 --size n : size of the square matrix (have to be a power of 2). [default 4])
 --demo d : execute a demo using all the functions : 0 (false). [default true, i.e, != 0])
 --test t : measure the execution time and export the result into a CSV format : 0 (false). [default 0, i.e, == 0]
+--repeat r : number of test repetition for each size to get the mean. [default 3]
 --limit l : to set the maximum size of matrices during the benchmark test such as n = 2^l (have to be greater than 0). [default 10]
 ```
 
 Un exemple de commande :
 
 ```bash
-./project.out --size 4 --demo 1 --test 1 --limit 5
+./project.out --size 4 --demo 0 --test 1 --limit 5 --repeat 10
 ```
 
 ## Benchmark

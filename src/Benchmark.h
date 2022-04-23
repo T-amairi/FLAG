@@ -49,6 +49,7 @@ double getExecTimeInversion_Strassen(const Matrix* A, int p, bool ifStrassenProd
  * @brief export for each implemented methods its execution time in a CSV file 
  * 
  * @param l set the maximum size of matrices during the benchmark test such as n = 2^l
+ * @param r number of test repetition for each size 
  * @param p modulus p
  */
-void exportResults(int l, int p);
+void exportResults(int l, int r, int p);

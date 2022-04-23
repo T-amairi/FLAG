@@ -32,7 +32,7 @@ int add(int x, int y, int p);
 int sub(int x, int y, int p);
 
 /**
- * @brief compute the inverse of x mod p using extended euclidean algorithm
+ * @brief compute the inverse of x mod p using the extended euclidean algorithm
  * 
  * @param x an int 
  * @param p modulus p

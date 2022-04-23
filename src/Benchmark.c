@@ -58,7 +58,7 @@ double getExecTimeInversion_Strassen(const Matrix* A, int p, bool ifStrassenProd
     return end.tv_sec + end.tv_usec / 1e6 - start.tv_sec - start.tv_usec / 1e6;
 }
 
-void exportResults(int l, int p)
+void exportResults(int l, int r, int p)
 {
     FILE *fLU;
     FILE *fInvStr_str;
@@ -75,32 +75,55 @@ void exportResults(int l, int p)
     Matrix* A;
     Matrix* B;
 
+    double sumLU;
+    double sumStrStr;
+    double sumStrNaive;
+    double sumProdNaive;
+    double sumProdStr;
+    int n;
+
     for(int i = 0; i < l; i++)
     {
-        int n = pow(2,i+1);
+        n = pow(2,i+1);
+        sumLU = 0.0;
+        sumStrStr = 0.0;
+        sumStrNaive = 0.0;
+        sumProdNaive = 0.0;
+        sumProdStr = 0.0;
 
         printf("Computing for n = %d\n",n);
 
-        A = newMatrixModP(n,p);
-        B = newMatrixModP(n,p);
+        for(int j = 0; j < r; j++)
+        {
+            printf("    Try count : %d\n",j + 1);
 
-        fprintf(fLU,"%d;%f\n",n,getExecTimeInversion_LU(A,p));
-        printf("    LU inversion : done\n");
+            A = newMatrixModP(n,p);
+            B = newMatrixModP(n,p);
 
-        fprintf(fInvStr_str,"%d;%f\n",n,getExecTimeInversion_Strassen(A,p,true));
-        printf("    Strassen inversion (Strassen product): done\n");
+            sumLU += getExecTimeInversion_LU(A,p);
+            printf("    LU inversion : done\n");
 
-        fprintf(fInvStr_naive,"%d;%f\n",n,getExecTimeInversion_Strassen(A,p,false));
-        printf("    Strassen inversion (naive product): done\n");
+            sumStrStr += getExecTimeInversion_Strassen(A,p,true);
+            printf("    Strassen inversion (Strassen product): done\n");
 
-        fprintf(fProd_naive,"%d;%f\n",n,getExecTimeProduct(A,B,p,false));
-        printf("    Naive matrix product : done\n");
+            sumStrNaive += getExecTimeInversion_Strassen(A,p,false);
+            printf("    Strassen inversion (naive product): done\n");
 
-        fprintf(fProd_str,"%d;%f\n",n,getExecTimeProduct(A,B,p,true));
-        printf("    Strassen matrix product : done\n");
+            sumProdNaive += getExecTimeProduct(A,B,p,false);
+            printf("    Naive matrix product : done\n");
 
-        freeMatrix(A);
-        freeMatrix(B);
+            sumProdStr += getExecTimeProduct(A,B,p,true);
+            printf("    Strassen matrix product : done\n\n");
+
+            freeMatrix(A);
+            freeMatrix(B);
+        }
+
+        fprintf(fLU,"%d;%f\n",n,sumLU / r);
+        fprintf(fInvStr_str,"%d;%f\n",n,sumStrStr / r);
+        fprintf(fInvStr_naive,"%d;%f\n",n,sumStrNaive / r);
+        fprintf(fProd_naive,"%d;%f\n",n,sumProdNaive / r);
+        fprintf(fProd_str,"%d;%f\n",n,sumProdStr / r);
 
         printf("\n");        
     }
