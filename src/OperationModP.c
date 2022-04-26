@@ -29,7 +29,13 @@ int sub(int x, int y, int p)
 int inv(int x, int p)
 {
     if(x == 1) return 1;
-    if(x == 0) return -1;
+
+    if(x == 0)
+    {
+        printf("Can not divide by zero\n");
+        exit(1);
+        return -1;
+    }
     
     int r0 = x, u0 = 1;
     int r1 = p, u1 = 0;
@@ -51,6 +57,7 @@ int inv(int x, int p)
     if(r0 != 1)
     {
         printf("Inverse of %d mod %d doesn't exist\n",x,p);
+        exit(1);
         return -1;
     }
 

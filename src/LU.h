@@ -23,7 +23,7 @@
 void LU(const Matrix* A, Matrix* L, Matrix* U, int p);
 
 /**
- * @brief check if A = LU mod p
+ * @brief check if A == LU mod p
  * 
  * @param A the decomposed matrix
  * @param L the lower matrix 
@@ -66,7 +66,7 @@ int* backwardSub(const Matrix* U, const int* b, int p);
 int* linearSolveLU(const Matrix* L, const Matrix* U, const int* b, int p);
 
 /**
- * @brief check if Ax = b mod p 
+ * @brief check if Ax == b mod p 
  * 
  * @param A the matrix of the linear system
  * @param x lhs vector

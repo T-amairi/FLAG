@@ -9,8 +9,6 @@
  */
 
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include "OperationModP.h"
 
@@ -58,7 +56,7 @@ Matrix* newMatrix(int n);
 Matrix* newIdentity(int n);
 
 /**
- * @brief create a new matrix struct with initialized value mod p
+ * @brief create a new matrix struct with random value mod p
  * 
  * @param n the size of the matrix
  * @param p modulus p
@@ -97,7 +95,7 @@ Matrix* subMatrix(const Matrix* A, const Matrix* B, int p);
 void subMatrixInPlace(Matrix* A, Matrix* B, int p, bool invert);
 
 /**
- * @brief free the allocated memory for matrix
+ * @brief free the allocated memory used by matrix
  * 
  * @param matrix the struct matrix to be freed 
  */

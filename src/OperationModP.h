@@ -10,6 +10,7 @@
 
 #pragma once
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief compute the sum of x and y mod p

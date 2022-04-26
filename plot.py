@@ -3,6 +3,7 @@
 # Tahar AMAIRI & Hamza RAIS
 # MAIN4 Polytech Sorbonne
 # FLAG : [Implementation project]
+# To export the results into plots 
 
 from matplotlib import pyplot as plt
 import csv

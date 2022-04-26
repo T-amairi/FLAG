@@ -1,6 +1,6 @@
 # Algorithmique algébrique
 
-Ce projet consiste à implémenter en C et à comparer différents algorithmes de multiplication et d'inversion de matrice. Pour des raisons de simplicité, l'implémentation se fera uniquement avec des matrices carrées de taille 2^n. Finalement, toute opération arithmétique se fera dans le coprs fini ℤ/pℤ avec p un nombre premier ne dépassant pas les 30 bits. Il est vivement recommandé de choisir un nombre premier p assez élevé afin d'obtenir (avec grande probabilité) des matrices inversibles. En effet, le programme part du principe que les matrices sont inversibles (néanmoins, le programme peut vérifier si c'est vraiment le cas).
+Ce projet consiste à implémenter en C et à comparer différents algorithmes de multiplication et d'inversion de matrice. Pour des raisons de simplicité, l'implémentation se fera uniquement avec des matrices carrées de taille 2^n. Finalement, toute opération arithmétique se fera dans le corps fini ℤ/pℤ avec p un nombre premier ne dépassant pas les 30 bits. Il est vivement recommandé de choisir un nombre premier p assez élevé afin d'obtenir (avec grande probabilité) des matrices inversibles. En effet, le programme part du principe que les matrices sont inversibles (néanmoins, le programme peut vérifier si c'est vraiment le cas).
 
 ## Les algorithmes implémentés
 
@@ -45,6 +45,10 @@ Un exemple de commande :
 Lors des benchmarks, les résultats sont exportés au format CSV dans le dossier `benchmark`. Pour obtenir les plots des résultats, il suffit d'exécuter le script `plot.py` et les images des graphiques seront dans le dossier `img`.
 
 **ATTENTION** : le package matplotlib est nécessaire.
+
+## Rapport
+
+Le rapport du projet en PDF se trouve dans le dossier `doc`. Par ailleurs, tous les résultats utilisés dans le rapport se trouve dans le dossier `archive`.
 
 ## Sources
 
