@@ -26,9 +26,9 @@ généré. Il existe aussi une règle `clean`.
 Voici les options disponibles à l'utilisateur lors de l'exécution :
 
 ```
---prime p : compute in the prime finite field ℤ/pℤ. [default 65537])
---size n : size of the square matrix (have to be a power of 2). [default 4])
---demo d : execute a demo using all the functions : 0 (false). [default true, i.e, != 0])
+--prime p : compute in the prime finite field ℤ/pℤ. [default 65537]
+--size n : size of the square matrix (have to be a power of 2). [default 4]
+--demo d : execute a demo using all the functions : 0 (false). [default true, i.e, != 0]
 --test t : measure the execution time and export the result into a CSV format : 0 (false). [default 0, i.e, == 0]
 --repeat r : number of test repetition for each size to get the mean. [default 3]
 --limit l : to set the maximum size of matrices during the benchmark test such as n = 2^l (have to be greater than 0). [default 10]
